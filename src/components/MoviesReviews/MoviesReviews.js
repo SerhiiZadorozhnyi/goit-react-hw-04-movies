@@ -1,53 +1,36 @@
-import React, { Component } from 'react';
-import * as api from '../../service/movies-api';
-import { toast } from 'react-toastify';
+// import React, { Component } from 'react';
+// import * as api from '../../service/movies-api';
+// import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from '../Loader/Loader';
+// import Loader from '../Loader/Loader';
 import s from './MoviesReviews.module.css';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-export default class MoviesReviews extends Component {
-  state = {
-    reviews: [],
-    isLoading: false,
-  };
 
-  componentDidMount() {
-    const { movieId } = this.props.match.params;
-    this.setState({ isLoading: true });
-    api
-      .getMoviesReviews(movieId)
-      .then(reviews => {
-        this.setState({
-          reviews: [...reviews],
-        });
-      })
-      .catch(error => {
-        toast.error(error);
-      })
-      .finally(() => this.setState({ isLoading: false }));
-  }
 
-  render() {
-    const { reviews, isLoading } = this.state;
+import { fetchReviews } from '../../service/movies-api';
 
+export default function MoviesReviews() {
+  const { movieId } = useParams();
+  const [reviews, setReviews] = useState(null);
+
+  useEffect(() => {
+    fetchReviews(movieId).then(data => setReviews(data.results));
+  }, [movieId]);
+
+  if (reviews && reviews.length > 0) {
     return (
-      <div className={s.section}>
-        {isLoading && <Loader />}
-        <h2 className={s.title}>Reviews</h2>
-        {reviews.length === 0 && (
-          <p>We don't have any reviews for this movie.</p>
-        )}
-
-        <ul className={s.container}>
-          {reviews.length !== 0 &&
-            reviews.map(({ id, author, content }) => (
-              <li key={id}>
-                <p className={s.subtitle}>Author: {author}</p>
-                <p className={s.text}>{content}</p>
-              </li>
-            ))}
-        </ul>
-      </div>
+      <ul >
+        {reviews.map(review => (
+          <li className={s.title} key={review.id}>
+            <h3 className={s.subtitle}>{review.author}</h3>
+            <p className={s.text}>{review.content}</p>
+          </li>
+        ))}
+      </ul>
     );
   }
+
+  return <p>We don't have any reviews for this movie</p>;
 }

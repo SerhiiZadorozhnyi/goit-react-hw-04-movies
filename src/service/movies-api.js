@@ -52,14 +52,22 @@ export const getMoviesCast = async movie_id => {
   }
 };
 
-export const getMoviesReviews = async movie_id => {
-  try {
-    const { data } = await axios.get(`/movie/${movie_id}/reviews`);
-    return data;
-  } catch (error) {
-    console.log('error', { error });
-    return [];
-  }
+// export const getMoviesReviews = async movie_id => {
+//   try {
+//     const { data } = await axios.get(`/movie/${movie_id}/reviews`);
+//     return data;
+//   } catch (error) {
+//     console.log('error', { error });
+//     return [];
+//   }
+// };
+
+export const fetchReviews = movieId => {
+  return axios
+    .get(
+      `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${API_KEY}&page=1`,
+    )
+    .then(({ data }) => data);
 };
 
 export const imgPath = 'https://image.tmdb.org/t/p/w200';

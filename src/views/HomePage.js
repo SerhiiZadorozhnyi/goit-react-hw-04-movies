@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MoviesList from '../components/MoviesList/MoviesList';
 import Loader from '../components/Loader/Loader';
 
-export default class HomeView extends Component {
+export default class HomePage extends Component {
   state = {
     trending: [],
     isLoading: false,

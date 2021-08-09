@@ -8,6 +8,9 @@ import Loader from '../components/Loader/Loader';
 import s from '../components/MovieCard/MovieCard.module.css';
 import routes from '../routes';
 
+// import { Stack, IStackTokens } from '@fluentui/react';
+// import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
+
 const MoviesCast = lazy(() =>
   import(
     '../components/MovieCast/MovieCast' /* webpackChunkName: "movies-cast" */
@@ -20,7 +23,7 @@ const MoviesReviews = lazy(() =>
   ),
 );
 
-export default class MoviesDetailsView extends Component {
+export default class MovieDetailsPage extends Component {
   state = {
     movie: null,
     isLoading: false,
@@ -36,7 +39,6 @@ export default class MoviesDetailsView extends Component {
     this.setState({ movie: response });
   }
 
-  // handleGoBack = () => this.props.history.goBack();
   handleGoBack = () => {
     const { history } = this.props;
     history.push(this.props.location?.state?.from || routes.home);
